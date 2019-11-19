@@ -3,59 +3,50 @@
 
 'use strict';
 const { Controller } = require('egg');
-// 定义创建接口的请求参数规则
-const createRule = {
-  username: 'string',	// 自定义的校验规则
-  password: 'string',	// 自带的校验规则
-};
 class UsersController extends Controller {
   constructor(ctx) {
     super(ctx);
 
     this.createRule = {
-
+      username: 'string',	// 自定义的校验规则
+      password: 'string',	// 自带的校验规则
     };
   }
-  async create () {
+  async create() {
     const { ctx } = this;
-    ctx.validate(createRule, ctx.request.body);
-    const userInfo = await ctx.service.users.check(ctx.request.body);
+    ctx.validate(this.createRule, ctx.request.body);
+    const userInfo = await ctx.service.users.insert(ctx.request.body);
     ctx.body = {
       data: userInfo,
       status: 200,
     };
     ctx.status = 200;
   }
-  async destroy () {
+  async destroy() {
     const { ctx } = this;
     this.ctx.body = '删除';
   }
-  async update () {
+  async update() {
     const { ctx } = this;
     this.ctx.body = '修改';
   }
-  async show () {
+  async show() {
     const { ctx } = this;
     this.ctx.body = '查询';
   }
-  async index () {
+  async index() {
     const { ctx } = this;
-    console.log(ctx.request.body);
-    const userInfo = await ctx.service.users.check({
-      username: 'zxy',
-      password: 123456,
-    });
-    ctx.body = {
-      id: userInfo,
-    };
+    console.log(ctx.query);
+    const userInfo = await ctx.service.users.check(ctx.query);
+    ctx.body = userInfo;
     ctx.status = 200;
 
   }
-  async new () {
+  async new() {
     const { ctx } = this;
     this.ctx.body = '创建页面';
   }
-  async edit () {
+  async edit() {
     const { ctx } = this;
     this.ctx.body = '修改页面';
   }

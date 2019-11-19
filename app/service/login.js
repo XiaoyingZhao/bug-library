@@ -7,27 +7,32 @@ class loginService extends Service {
   //   super(ctx);
   //   console.log(ctx);
   // }
-  async create (params) {
-    console.log(params);
-    const id = params.id || '';
-    const sql = `select * from bug_user where id=${id}`;
-    const user = await this.app.mysql.query(sql);
-    // const user = await this.app.mysql.query('select * from bug_user', '');
-    return user;
-    // 调用 CNode V1 版本 API
-    // const result = await this.ctx.curl(`${this.root}/login`, {
-    //   method: 'get',
-    //   data: params,
-    //   dataType: 'json',
-    //   contentType: 'json',
-    // });
-    // 检查调用是否成功，如果调用失败会抛出异常
-    // this.checkSuccess(result);
-    // 返回创建的 topic 的 id
-    // return result.data.id;
+  async check(params) {
+    const username = params.username || '';
+    const password = params.password || '';
+    console.log(username);
+    // const sql = `select * from bug_user where username='${username}'`;
+    // const user = await this.app.mysql.query(sql);
+    const user = await this.app.mysql.get('bug_user', { username, password });
+    if (user) {
+      return user;
+    }
+    return '用户不存在';
+
+  }
+  async create(params) {
+    const username = params.username || '';
+    const password = params.password || '';
+    console.log(username);
+    // const sql = `select * from bug_user where username='${username}'`;
+    // const user = await this.app.mysql.query(sql);
+    const user = await this.app.mysql.get('bug_user', { username });
+    if (user) return '该用户已存在';
+    await this.app.mysql.insert('bug_user', { username, password });
+    console.log(user);
   }
   // 封装统一的调用检查函数，可以在查询、创建和更新等 Service 中复用
-  checkSuccess (result) {
+  checkSuccess(result) {
     console.log(12356789);
     if (result.status !== 200) {
       const errorMsg = result.data && result.data.error_msg ? result.data.error_msg : 'unknown error';
