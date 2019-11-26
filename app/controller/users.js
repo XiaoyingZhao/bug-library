@@ -15,7 +15,7 @@ class UsersController extends Controller {
   async create() {
     const { ctx } = this;
     ctx.validate(this.createRule, ctx.request.body);
-    const userInfo = await ctx.service.users.insert(ctx.request.body);
+    const userInfo = await this.service.users.insert(ctx.request.body);
     ctx.body = {
       data: userInfo,
       status: 200,
@@ -37,7 +37,7 @@ class UsersController extends Controller {
   async index() {
     const { ctx } = this;
     console.log(ctx.query);
-    const userInfo = await ctx.service.users.check(ctx.query);
+    const userInfo = await this.service.users.check(ctx.query);
     ctx.body = userInfo;
     ctx.status = 200;
 

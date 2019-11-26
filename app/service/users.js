@@ -4,7 +4,7 @@
 const Service = require('egg').Service;
 
 class UserService extends Service {
-  async insert (params) {
+  async insert(params) {
     const username = params.username || '';
     const password = params.password || '';
     console.log(username);
@@ -13,7 +13,7 @@ class UserService extends Service {
     await this.app.mysql.insert('bug_user', { username, password });
   }
 
-  async check (params) {
+  async check(params) {
     // const result = await this.app.mysql.select('bug_user', {
     //   where: { username: params.username, password: params.password },
     // });

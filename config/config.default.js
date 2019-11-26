@@ -15,8 +15,13 @@ module.exports = appInfo => {
   // use for cookie sign key, should change to your own and keep security
   config.keys = appInfo.name + '_1571017940871_3680';
 
-  // add your middleware config here
-  config.middleware = [];
+  // 增加配置中间件,数组顺序即为中间件的加载顺序
+  config.middleware = [ 'common' ];
+  // 给中间件配置options参数
+  config.common = {
+    abc: '123567890',
+  };
+
   config.view = {
     defaultExtension: '.html',
     defaultViewEngine: 'nunjucks',
@@ -44,7 +49,7 @@ module.exports = appInfo => {
   };
   // add your user config here
   const userConfig = {
-    // myAppName: 'egg',
+    myAppName: 'bug-library',
   };
 
   return {
